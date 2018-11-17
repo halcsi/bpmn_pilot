@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>hu.tigra.pilot</groupId>
+    <artifactId>bpmnsc-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>bpmnsc</artifactId>
+  <packaging>ear</packaging>
+  <name>bpmnsc</name>
+  <description>bpmnsc</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>hu.tigra.pilot</groupId>
+      <artifactId>bpmnsc-ejb</artifactId>
+      <type>ejb</type>
+    </dependency>
+    <dependency>
+      <groupId>hu.tigra.pilot</groupId>
+      <artifactId>bpmnsc-web</artifactId>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+		<version>2.10.1</version>
+        <configuration>
+          <displayName>bpmnsc</displayName>
+          <description>bpmnsc</description>
+          <version>7</version>
+          <modules>
+            <ejbModule>
+              <groupId>hu.tigra.pilot</groupId>
+              <artifactId>bpmnsc-ejb</artifactId>
+            </ejbModule>
+            <webModule>
+              <groupId>hu.tigra.pilot</groupId>
+              <artifactId>bpmnsc-web</artifactId>
+              <contextRoot>/bpmnsc</contextRoot>
+            </webModule>
+          </modules>
+          <defaultLibBundleDir>lib</defaultLibBundleDir>
+          <skinnyWars>true</skinnyWars>
+          <archive>
+            <manifest>
+              <addClasspath>false</addClasspath>
+            </manifest>
+            <manifestEntries>
+              <Dependencies>com.sun.xml.bind,org.hibernate.envers services,org.apache.commons.beanutils,org.apache.commons.codec,org.apache.commons.collections,org.apache.commons.io,org.apache.commons.lang,org.apache.commons.pool,org.apache.xalan,org.dom4j,org.infinispan,org.hibernate,org.apache.cxf,org.apache.cxf.impl,org.apache.cxf.ws-security,org.apache.ws.security</Dependencies>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>idea</id>
+      <build>
+        <finalName>${project.artifactId}-${project.version}-exploded.${project.packaging}</finalName>
+        <plugins>
+          <plugin>
+            <artifactId>maven-ear-plugin</artifactId>
+            <configuration>
+              <unpackTypes>ejb,war</unpackTypes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
